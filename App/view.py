@@ -36,8 +36,13 @@ operación solicitada
 
 def printMenu():
     print("Bienvenido")
-    print("1- Cargar información en el catálogo")
-    print("2- ")
+    print("1- Iniciar analizador")
+    print("2- Cargar datos")
+    print("3- Contar los avistamientos en una ciudad")
+    print("4- Contar los avistamientos por duración")
+    print("5- Contar avistamientos por Hora/Minutos del día")
+    print("6- Contar los avistamientos en un rango de fechas")
+    print("2- Contar los avistamientos de una Zona Geográfica")
 
 catalog = None
 
@@ -48,11 +53,13 @@ while True:
     printMenu()
     inputs = input('Seleccione una opción para continuar\n')
     if int(inputs[0]) == 1:
-        print("Cargando información de los archivos ....")
-
+        catalog = controller.newcatalog()
     elif int(inputs[0]) == 2:
-        pass
-
+        controller.loaddata(catalog)
+        size = lt.size(catalog["ufo"])
+        print(size)
+        print(lt.subList(catalog["ufo"], 1, 5))
+        print(lt.subList(catalog["ufo"], size - 5, 5))
     else:
         sys.exit(0)
 sys.exit(0)

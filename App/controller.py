@@ -23,8 +23,14 @@
 import config as cf
 import model
 import csv
-
-
+def newcatalog():
+    ret = model.catalog()
+    return(ret)
+def loaddata(catalogo):
+    filename = cf.data_dir +"UFOS-utf8-small.csv"
+    file = csv.DictReader(open(filename, encoding="utf-8"))
+    for ufo in file:
+        model.addufo(catalogo, ufo)
 """
 El controlador se encarga de mediar entre la vista y el modelo.
 """

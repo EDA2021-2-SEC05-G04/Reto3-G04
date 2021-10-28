@@ -27,21 +27,21 @@
 
 import config as cf
 from DISClib.ADT import list as lt
+import datetime
 from DISClib.ADT import map as mp
+from DISClib.ADT import orderedmap as om
 from DISClib.DataStructures import mapentry as me
 from DISClib.Algorithms.Sorting import shellsort as sa
 assert cf
-
-"""
-Se define la estructura de un catálogo de videos. El catálogo tendrá dos listas, una para los videos, otra para las categorias de
-los mismos.
-"""
-
-# Construccion de modelos
-
-# Funciones para agregar informacion al catalogo
-
-# Funciones para creacion de datos
+def catalog():
+    ufos = {
+        "ufo" : None,
+        "cities" :None
+    }
+    ufos["ufo"] = lt.newList("ARRAY_LIST")
+    return(ufos)
+def addufo(catalog, ufo):
+    lt.addLast(catalog["ufo"], ufo)
 
 # Funciones de consulta
 
