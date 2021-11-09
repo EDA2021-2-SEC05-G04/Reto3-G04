@@ -23,6 +23,11 @@
 import config as cf
 import sys
 import controller
+from DISClib.ADT import map as mp
+from DISClib.ADT import orderedmap as om
+from DISClib.DataStructures import mapentry as me
+import model
+import datetime
 from DISClib.ADT import list as lt
 assert cf
 
@@ -56,10 +61,19 @@ while True:
         catalog = controller.newcatalog()
     elif int(inputs[0]) == 2:
         controller.loaddata(catalog)
-        size = lt.size(catalog["ufo"])
-        print(size)
-        print(lt.subList(catalog["ufo"], 1, 5))
-        print(lt.subList(catalog["ufo"], size - 5, 5))
+    elif int(inputs[0]) == 3:
+        city = input("ingrese la ciudad")
+        ret = controller.req1(catalog, city)
+        print("numero de avistamientos: ", om.size(catalog["cities"]))
+        print("numero de avistamientos en " +  city + " es : " + str(ret[0]))
+        print(ret[1])
+        print(ret[2])
+    elif int(inputs[0]) == 4:
+        hour1 = input("ingrese el limite inferior:  ")
+        hour2 = input("ingrese el limite superiror:  ")
+        date1 = datetime.datetime.strptime(hour1, '%H:%M:%S')
+        date2 = datetime.datetime.strptime(hour2, '%H:%M:%S')
+        controller.req3(catalog, date1, date2)
     else:
         sys.exit(0)
 sys.exit(0)

@@ -31,6 +31,11 @@ def loaddata(catalogo):
     file = csv.DictReader(open(filename, encoding="utf-8"))
     for ufo in file:
         model.addufo(catalogo, ufo)
+
+def req1 (catalogo, city):
+    return model.req1(catalogo, city)
+def req3 (catalogo, keyhi, keylow):
+    return model.req3(catalogo, keyhi, keylow)
 """
 El controlador se encarga de mediar entre la vista y el modelo.
 """
