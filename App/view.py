@@ -68,12 +68,28 @@ while True:
         print("numero de avistamientos en " +  city + " es : " + str(ret[0]))
         print(ret[1])
         print(ret[2])
-    elif int(inputs[0]) == 4:
+    elif int(inputs[0]) == 5:
         hour1 = input("ingrese el limite inferior:  ")
         hour2 = input("ingrese el limite superiror:  ")
         date1 = datetime.datetime.strptime(hour1, '%H:%M:%S')
         date2 = datetime.datetime.strptime(hour2, '%H:%M:%S')
         controller.req3(catalog, date1, date2)
+    elif int(inputs[0]) == 6:
+        latitudi = float(input("latitud inferior: "))
+        latitudo = float(input("latitud superior: "))
+        longitudi = float(input("longitud inferior: "))
+        longitudo = float(input("longitud superior: "))
+        map  = catalog["longitude"]
+        a = controller.req5(catalog["longitude"], latitudi, latitudo, longitudi,longitudo)
+        for i in lt.iterator(a):
+            print("datetime : ",i["datetime"])
+            print("state : ",i["state"])
+            print("country : ",i["country"])
+            print("shape : ",i["shape"])
+            print("duration (seconds) : ",i["duration (seconds)"])
+            print("latitude : ",i["latitude"])
+            print("longitude" , i["longitude"])
+        print(lt.size(a))
     else:
         sys.exit(0)
 sys.exit(0)
