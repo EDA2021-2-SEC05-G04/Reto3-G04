@@ -28,7 +28,7 @@ from DISClib.ADT import orderedmap as om
 from DISClib.DataStructures import mapentry as me
 import model
 import datetime
-from prettytable import PrettyTable
+
 from DISClib.ADT import list as lt
 assert cf
 
