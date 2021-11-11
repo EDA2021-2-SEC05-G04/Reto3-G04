@@ -28,6 +28,7 @@ from DISClib.ADT import orderedmap as om
 from DISClib.DataStructures import mapentry as me
 import model
 import datetime
+from prettytable import PrettyTable
 from DISClib.ADT import list as lt
 assert cf
 
@@ -47,7 +48,7 @@ def printMenu():
     print("4- Contar los avistamientos por duración")
     print("5- Contar avistamientos por Hora/Minutos del día")
     print("6- Contar los avistamientos en un rango de fechas")
-    print("2- Contar los avistamientos de una Zona Geográfica")
+    print("7- Contar los avistamientos de una Zona Geográfica")
 
 catalog = None
 
@@ -68,6 +69,25 @@ while True:
         print("numero de avistamientos en " +  city + " es : " + str(ret[0]))
         print(ret[1])
         print(ret[2])
+    elif int(inputs[0]) == 4:
+        lim_inf=float(input("lim inferior"))
+        lim_sup=float(input("lim superior"))
+        compilado,total,llave_duracion=controller.req2(catalog,lim_inf,lim_sup)
+        compilado2=lt.newList("ARRAY_LIST")
+        for i in range(1,4):
+            elemento=lt.getElement(compilado,i)
+            lt.addLast(compilado2,elemento)
+        for i in range(lt.size(compilado)-2,lt.size(compilado)+1):
+            elemento=lt.getElement(compilado,i)
+            lt.addLast(compilado2,elemento)
+
+        print("Hay ",total," ufos con duración máxima:",llave_duracion)
+        x = PrettyTable()
+        x.field_names = ["Datetime", "Country-City","State","Shape","Duration"]
+        for ufo in lt.iterator(compilado2):
+            x.add_row([ufo["datetime"],ufo["country"]+"-"+ufo["city"],ufo["state"],ufo["shape"],ufo["duration (seconds)"]])
+        print(x)
+
     elif int(inputs[0]) == 5:
         hour1 = input("ingrese el limite inferior:  ")
         hour2 = input("ingrese el limite superiror:  ")
@@ -79,6 +99,18 @@ while True:
         print(a[2])
          
     elif int(inputs[0]) == 6:
+        lim_inf=input("lim inferior en AAAA-MM-DD:\n").split("-")
+        lim_sup=input("lim superior en AAAA-MM-DD:\n").split("-")
+        lim_inf=datetime.date(int(lim_inf[0]),int(lim_inf[1]),int(lim_inf[2]))
+        lim_sup=datetime.date(int(lim_sup[0]),int(lim_sup[1]),int(lim_sup[2]))
+        primeros_ultimos,total=controller.req4(catalog,lim_inf,lim_sup)
+        x = PrettyTable()
+        x.field_names = ["Datetime","Date", "Country-City","State","Shape","Duration"]
+        print("Hay una cantidad de :",total," ufos en este intervalo")
+        for ufo in lt.iterator(primeros_ultimos):
+            x.add_row([ufo["datetime"],datetime.datetime.strptime(ufo["datetime"],"%Y-%m-%d %H:%M:%S").date(),ufo["country"]+"-"+ufo["city"],ufo["state"],ufo["shape"],ufo["duration (seconds)"]])
+        print(x)
+    elif int(inputs[0]) == 7:
         latitudi = float(input("latitud inferior: "))
         latitudo = float(input("latitud superior: "))
         longitudi = float(input("longitud inferior: "))
