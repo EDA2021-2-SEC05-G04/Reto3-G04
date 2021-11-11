@@ -25,17 +25,26 @@ import model
 import csv
 def newcatalog():
     ret = model.catalog()
-    return(ret)
+    return (ret)
 def loaddata(catalogo):
     filename = cf.data_dir +"UFOS-utf8-small.csv"
     file = csv.DictReader(open(filename, encoding="utf-8"))
     for ufo in file:
         model.addufo(catalogo, ufo)
+        model.addUfoDuracion(catalogo, ufo)
+        model.addUfoFecha(catalogo,ufo)
 
 def req1 (catalogo, city):
     return model.req1(catalogo, city)
 def req3 (catalogo, keyhi, keylow):
     return model.req3(catalogo, keyhi, keylow)
+def hacer_fecha(fecha):
+    return model.hacer_fecha(fecha)
+def req2(analyzer,lim_inf,lim_sup):
+    return model.req2(analyzer,lim_inf,lim_sup)
+
+def req4(analyzer,lim_inf,lim_sup):
+    return model.req4(analyzer,lim_inf,lim_sup)
 """
 El controlador se encarga de mediar entre la vista y el modelo.
 """

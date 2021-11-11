@@ -40,15 +40,117 @@ def catalog():
         "cities" :None,
         "hour" : None
     }
+    ufos['Duración'] = om.newMap(omaptype="BST",comparefunction=comparador_Segundos)
+    ufos["Fecha"]=om.newMap(omaptype="BST",comparefunction=comparador_Segundos)
     ufos["hour"] = om.newMap ("BST")
     ufos["ufo"] = lt.newList("ARRAY_LIST")
     ufos["cities"] = om.newMap("BST")
     return(ufos)
+
+def req2(analyzer,lim_inf,lim_sup):
+    omap_duracion=analyzer["Duración"]
+    lista_listas=om.values(omap_duracion,lim_inf,lim_sup)
+    iterador=lt.iterator(lista_listas)
+    compilado=lt.newList("ARRAY_LIST")
+    for omap in iterador:
+        valueset=om.valueSet(omap)
+        for lista in lt.iterator(valueset):
+            for ufo in lt.iterator(lista):
+                lt.addLast(compilado,ufo)
+    mayor_duración_llave=om.maxKey(omap_duracion)
+    valor=me.getValue(om.get(omap_duracion,mayor_duración_llave))
+    valor=om.valueSet(valor)
+    cantidades=0
+    for lista in lt.iterator(valor):
+        cantidades+=lt.size(lista)
+    
+    return compilado,cantidades,mayor_duración_llave
+
+def req4(analyzer,lim_inf,lim_sup):
+    omap_duracion=analyzer["Fecha"]
+    lista_listas=om.values(omap_duracion,lim_inf,lim_sup)
+    compilado=lt.newList("ARRAY_LIST")
+    for i in lt.iterator(lista_listas):
+        for e in lt.iterator(i):
+            lt.addLast(compilado,e)
+    compilado=mk.sort(compilado,comparador_algo_ord)
+    compiladov2=lt.newList("ARRAY_LIST")
+    for i in range(1,4):
+        elemento=lt.getElement(compilado,i)
+        lt.addLast(compiladov2,elemento)
+    for i in range(lt.size(compilado)-2,lt.size(compilado)+1):
+        elemento=lt.getElement(compilado,i)
+        lt.addLast(compiladov2,elemento)
+    total=lt.size(compilado)
+    return compiladov2,total
+def comparador_algo_ord(el1,el2):
+    fecha=hacer_fecha(el1)
+    fecha2=hacer_fecha(el2)
+    return fecha<fecha2
+def hacer_fecha(fecha):
+    fecha1=(fecha["datetime"].split(" ")[0]).split("-")
+    fecha2=((fecha["datetime"].split(" "))[1]).split(":")
+    fechax=datetime.datetime(int(fecha1[0]),int(fecha1[1]),int(fecha1[2]),int(fecha2[0]),int(fecha2[1]),int(fecha2[2]),0)
+    return fechax
 def addufo(catalog, ufo):
     lt.addLast(catalog["ufo"], ufo)
     update(catalog["cities"], ufo)
     updatehour(catalog["hour"], ufo)
+def comparador_Segundos(ob1,ob2):
+    if (ob1 == ob2):
+        return 0
+    elif (ob1 > ob2):
+        return 1
+    else:
+        return -1
+def addUfoDuracion(catalog, avist):
+    omap=catalog["Duración"]
+    duración=float(avist["duration (seconds)"])
+    contiene=om.contains(omap,duración)
+    if contiene:
+        valor1=me.getValue(om.get(omap,duración))
+        llave2=avist["country"]+"-"+avist["city"]
+        contiene2=om.contains(valor1,llave2)
+        if contiene2:
+            valor2=me.getValue(om.get(valor1,llave2))
+            lt.addLast(valor2,avist)
+        else:
+            lista=lt.newList("ARRAY_LIST")
+            lt.addLast(lista,avist)
+            om.put(valor1,llave2,lista)
+    else:
+        valor=crear_estructura_valor(avist)
+        om.put(omap,duración,valor)
+def crear_estructura_valor(avist):
+    lista_avist=lt.newList("ARRAY_LIST")
+    lt.addLast(lista_avist,avist)
+    om_ciudad=om.newMap(omaptype="RBT",comparefunction=comparador_alfabético)
+    llave=avist["country"]+"-"+avist["city"]
+    om.put(om_ciudad,llave,lista_avist)
+    return om_ciudad
 
+def comparador_alfabético(country1_ciudad1,country2_ciudad2):
+    primer_caracter=ord(str(country1_ciudad1[0]).lower())
+    segundo_caracter=ord(str(country2_ciudad2[0]).lower())
+    if (primer_caracter == segundo_caracter):
+        return 0
+    elif (primer_caracter > segundo_caracter):
+        return 1
+    else:
+        return -1
+
+def addUfoFecha(catalog,avist):
+    omap=catalog["Fecha"]
+    fecha=(avist["datetime"].split(" ")[0]).split("-")
+    fecha=datetime.date(int(fecha[0]),int(fecha[1]),int(fecha[2]))
+    contiene=om.contains(omap,fecha)
+    if contiene:
+        existe=me.getValue(om.get(omap,fecha))
+        lt.addLast(existe,avist)
+    else:
+        valor=lt.newList()
+        lt.addLast(valor,avist)
+        om.put(omap,fecha,valor)
 def updatehour(map, ufo):
     ho = ufo["datetime"][11:]
     ho = datetime.datetime.strptime(ho, '%H:%M:%S')
