@@ -45,6 +45,8 @@ def req2(analyzer,lim_inf,lim_sup):
 
 def req4(analyzer,lim_inf,lim_sup):
     return model.req4(analyzer,lim_inf,lim_sup)
+def req5 (catalog, latitudi, latitudo, longitudi,longitudo):
+    return(model.req5(catalog, latitudi, latitudo, longitudi,longitudo))
 """
 El controlador se encarga de mediar entre la vista y el modelo.
 """

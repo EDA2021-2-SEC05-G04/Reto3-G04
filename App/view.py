@@ -106,6 +106,21 @@ while True:
         for ufo in lt.iterator(primeros_ultimos):
             x.add_row([ufo["datetime"],datetime.datetime.strptime(ufo["datetime"],"%Y-%m-%d %H:%M:%S").date(),ufo["country"]+"-"+ufo["city"],ufo["state"],ufo["shape"],ufo["duration (seconds)"]])
         print(x)
+        latitudi = float(input("latitud inferior: "))
+        latitudo = float(input("latitud superior: "))
+        longitudi = float(input("longitud inferior: "))
+        longitudo = float(input("longitud superior: "))
+        map  = catalog["longitude"]
+        a = controller.req5(catalog["longitude"], latitudi, latitudo, longitudi,longitudo)
+        for i in lt.iterator(a):
+            print("datetime : ",i["datetime"])
+            print("state : ",i["state"])
+            print("country : ",i["country"])
+            print("shape : ",i["shape"])
+            print("duration (seconds) : ",i["duration (seconds)"])
+            print("latitude : ",i["latitude"])
+            print("longitude" , i["longitude"])
+        print(lt.size(a))
     else:
         sys.exit(0)
 sys.exit(0)
