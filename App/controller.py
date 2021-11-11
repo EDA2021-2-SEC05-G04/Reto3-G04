@@ -36,6 +36,8 @@ def req1 (catalogo, city):
     return model.req1(catalogo, city)
 def req3 (catalogo, keyhi, keylow):
     return model.req3(catalogo, keyhi, keylow)
+def req5 (catalog, latitudi, latitudo, longitudi,longitudo):
+    return(model.req5(catalog, latitudi, latitudo, longitudi,longitudo))
 """
 El controlador se encarga de mediar entre la vista y el modelo.
 """

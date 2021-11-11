@@ -38,17 +38,37 @@ def catalog():
     ufos = {
         "ufo" : None,
         "cities" :None,
-        "hour" : None
+        "hour" : None,
+        "longitude": None
     }
     ufos["hour"] = om.newMap ("BST")
     ufos["ufo"] = lt.newList("ARRAY_LIST")
     ufos["cities"] = om.newMap("BST")
+    ufos["longitude"] = om.newMap("BST")
     return(ufos)
 def addufo(catalog, ufo):
     lt.addLast(catalog["ufo"], ufo)
     update(catalog["cities"], ufo)
     updatehour(catalog["hour"], ufo)
+    updatelatitude(catalog["longitude"], ufo)
+def updatelatitude(map, ufo):
+    longitud = round(float(ufo["longitude"]), 2)
+    index = om.get(map, longitud)
+    if index is None:
+        ma = newlongitud()
+        om.put(map, longitud, ma)
+    else:
+        ma = me.getValue(index)
+    data(ma, ufo)
 
+def newlongitud():
+    entry = {"map": None}
+    entry["map"] = om.newMap("BST")
+    return(entry)
+def data(ma, ufo):
+    map = ma["map"]
+    latitud = round(float(ufo["latitude"]), 2)
+    om.put(map, latitud,ufo)
 def updatehour(map, ufo):
     ho = ufo["datetime"][11:]
     ho = datetime.datetime.strptime(ho, '%H:%M:%S')
@@ -111,6 +131,16 @@ def req3 (catalogo, limi, limo):
     a = lt.subList(lstord, 0, 3)
     b = lt.subList(lstord, lt.size(lstord) - 3, 3)
     return(tot, a, b)
+def req5(catalogo, loi, loo, lai, lao):
+    lista = lt.newList("ARRAY_LIST")
+    valores = om.values(catalogo, loo, loi)
+    for i in lt.iterator(valores):
+        longitudes = om.values(i["map"], lai, lao)
+        if lt.size(longitudes) != 0:
+            for j in lt.iterator(longitudes):
+                lt.addLast(lista, j)
+    return(lista)
+
 # Funciones de consulta
 
 # Funciones utilizadas para comparar elementos dentro de una lista
