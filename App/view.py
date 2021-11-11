@@ -93,7 +93,10 @@ while True:
         hour2 = input("ingrese el limite superiror:  ")
         date1 = datetime.datetime.strptime(hour1, '%H:%M:%S')
         date2 = datetime.datetime.strptime(hour2, '%H:%M:%S')
-        controller.req3(catalog, date1, date2)
+        a1,a2,a3=controller.req3(catalog, date1, date2)
+        print(a1)
+        print(a2)
+        print(a3)
     elif int(inputs[0]) == 6:
         lim_inf=input("lim inferior en AAAA-MM-DD:\n").split("-")
         lim_sup=input("lim superior en AAAA-MM-DD:\n").split("-")
@@ -106,6 +109,7 @@ while True:
         for ufo in lt.iterator(primeros_ultimos):
             x.add_row([ufo["datetime"],datetime.datetime.strptime(ufo["datetime"],"%Y-%m-%d %H:%M:%S").date(),ufo["country"]+"-"+ufo["city"],ufo["state"],ufo["shape"],ufo["duration (seconds)"]])
         print(x)
+    elif int(inputs[0]) == 7:
         latitudi = float(input("latitud inferior: "))
         latitudo = float(input("latitud superior: "))
         longitudi = float(input("longitud inferior: "))
