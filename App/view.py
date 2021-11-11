@@ -73,7 +73,11 @@ while True:
         hour2 = input("ingrese el limite superiror:  ")
         date1 = datetime.datetime.strptime(hour1, '%H:%M:%S')
         date2 = datetime.datetime.strptime(hour2, '%H:%M:%S')
-        controller.req3(catalog, date1, date2)
+        a = controller.req3(catalog, date1, date2)
+        print("el total de avistamientos entre las horas son: ",  a[0])
+        print(a[1])
+        print(a[2])
+         
     elif int(inputs[0]) == 6:
         latitudi = float(input("latitud inferior: "))
         latitudo = float(input("latitud superior: "))
